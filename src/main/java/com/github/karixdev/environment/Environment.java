@@ -14,10 +14,14 @@ public class Environment {
     }
 
     public String get(String name) {
-        if (properties.containsKey(name)) {
+        if (!properties.containsKey(name)) {
             throw new PropertyNotFoundException("Property with name: " + name + " was not found");
         }
 
         return properties.getProperty(name);
+    }
+
+    public Properties getProperties() {
+        return properties;
     }
 }
