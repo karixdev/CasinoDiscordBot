@@ -11,9 +11,9 @@ public class Database {
 
     private Connection establishConnection() throws SQLException {
         return DriverManager.getConnection(
-                environment.get("db.url"),
-                environment.get("db.user"),
-                environment.get("db.password")
+                environment.getVariable("db.url"),
+                environment.getVariable("db.user"),
+                environment.getVariable("db.password")
         );
     }
 }
