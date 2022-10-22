@@ -20,8 +20,4 @@ public class Environment {
 
         return properties.getProperty(name);
     }
-
-    public Properties getProperties() {
-        return properties;
-    }
 }
