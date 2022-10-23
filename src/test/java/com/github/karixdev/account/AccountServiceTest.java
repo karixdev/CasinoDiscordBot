@@ -1,10 +1,7 @@
 package com.github.karixdev.account;
 
 import com.github.karixdev.TestDatabase;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -17,8 +14,8 @@ public class AccountServiceTest {
         accountService = new AccountService(TestDatabase.getDatabase());
     }
 
-    @AfterAll
-    public static void cleanUpDatabase() throws IOException, SQLException {
+    @AfterEach
+    public void cleanUpDatabase() throws IOException, SQLException {
         TestDatabase.cleanUp();
     }
 
