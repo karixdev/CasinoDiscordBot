@@ -11,7 +11,7 @@ public class AccountService {
 
     private final Database database;
 
-    private final static int DEFAULT_CREDITS = 1000;
+    public final static int DEFAULT_CREDITS = 1000;
 
     public AccountService(Database database) {
         this.database = database;
@@ -34,5 +34,27 @@ public class AccountService {
 
         preparedStatement.close();
         connection.close();
+    }
+
+    public int updateCredits(int discordId, int newCredits) throws SQLException {
+        String sql = """
+                UPDATE account
+                SET credits = ?
+                WHERE discord_id = ?
+                """;
+
+        Connection connection = database.establishConnection();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        preparedStatement.setInt(1, newCredits);
+        preparedStatement.setInt(2, discordId);
+
+        preparedStatement.execute();
+
+        preparedStatement.close();
+        connection.close();
+
+        return newCredits;
     }
 }
