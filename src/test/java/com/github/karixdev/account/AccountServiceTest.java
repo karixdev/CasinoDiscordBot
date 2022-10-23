@@ -1,6 +1,7 @@
 package com.github.karixdev.account;
 
 import com.github.karixdev.TestDatabase;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,11 @@ public class AccountServiceTest {
     @BeforeEach
     public void setup() throws IOException {
         accountService = new AccountService(TestDatabase.getDatabase());
+    }
+
+    @AfterAll
+    public static void cleanUpDatabase() throws IOException, SQLException {
+        TestDatabase.cleanUp();
     }
 
     @Test
