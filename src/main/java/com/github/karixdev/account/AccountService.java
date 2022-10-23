@@ -57,4 +57,29 @@ public class AccountService {
 
         return newCredits;
     }
+
+    public int getCredits(int discordId) throws SQLException {
+        String sql = """
+                SELECT credits
+                FROM account
+                WHERE discord_id = ?
+                LIMIT 1
+                """;
+
+        Connection connection = database.establishConnection();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        preparedStatement.setInt(1, discordId);
+        preparedStatement.setMaxRows(1);
+
+        ResultSet rs = preparedStatement.executeQuery();
+
+        if (!rs.next()) {
+            createAccount(discordId);
+            return DEFAULT_CREDITS;
+        }
+
+        return rs.getInt("credits");
+    }
 }
