@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.util.Arrays;
 
 public class DiscordMessageListener extends ListenerAdapter {
-
     CommandHandler commandHandler = new CommandHandler();
 
     @Override
@@ -28,6 +27,6 @@ public class DiscordMessageListener extends ListenerAdapter {
     }
 
     private boolean isMessageACommand(String message) {
-        return message.charAt(0) == '!';
+        return message.charAt(0) == CommandHandler.COMMAND_PREFIX;
     }
 }
