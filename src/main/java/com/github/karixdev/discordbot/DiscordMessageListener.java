@@ -1,6 +1,8 @@
 package com.github.karixdev.discordbot;
 
+import com.github.karixdev.account.AccountService;
 import com.github.karixdev.command.CommandHandler;
+import com.github.karixdev.database.Database;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
@@ -8,8 +10,13 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.Arrays;
 
+
 public class DiscordMessageListener extends ListenerAdapter {
-    CommandHandler commandHandler = new CommandHandler();
+    private final CommandHandler commandHandler;
+
+    public DiscordMessageListener(AccountService accountService) {
+        this.commandHandler = new CommandHandler(accountService);
+    }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
