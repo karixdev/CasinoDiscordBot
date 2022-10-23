@@ -37,4 +37,30 @@ public class AccountServiceTest {
 
         assertEquals(1237, result);
     }
+
+    @Test
+    public void GivenDiscordIdFromNonExistingAccount_WhenGetCredits_ThenReturnDefaultCredits() throws SQLException {
+        // given
+        int id = 11;
+
+        // when
+        int result = accountService.getCredits(id);
+
+        // then
+        assertEquals(AccountService.DEFAULT_CREDITS, result);
+    }
+
+    @Test
+    public void GivenDiscordIdFromExistingAccount_WhenGetCredits_ThenReturnValidCredits() throws SQLException {
+        // given
+        int id = 11;
+        accountService.createAccount(id);
+        accountService.updateCredits(id, 1237);
+
+        // when
+        int result = accountService.getCredits(id);
+
+        // then
+        assertEquals(1237, result);
+    }
 }
