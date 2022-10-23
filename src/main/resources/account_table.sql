@@ -1,0 +1,1 @@
+CREATE TABLE `casino`.`account` (`discord_id` INT NOT NULL , `credits` INT NOT NULL DEFAULT '1000' , PRIMARY KEY (`discord_id`)) ENGINE = InnoDB;
