@@ -9,7 +9,7 @@ import java.sql.*;
 public class Database {
     private final Environment environment;
 
-    private Connection establishConnection() throws SQLException {
+    public Connection establishConnection() throws SQLException {
         return DriverManager.getConnection(
                 environment.getVariable("db.url"),
                 environment.getVariable("db.user"),
