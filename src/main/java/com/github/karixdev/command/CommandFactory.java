@@ -18,7 +18,11 @@ public abstract class CommandFactory {
     public void process(MessageReceivedEvent event, List<String> params) {
         ICommand command = createCommand(accountService, event, params);
 
-        command.execute(event, params);
+        try {
+            command.execute(event, params);
+        } catch (RuntimeException e) {
+            onFailure(event.getMessage());
+        }
     }
 
     protected void onFailure(Message message) {

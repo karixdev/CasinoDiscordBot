@@ -15,7 +15,7 @@ public class AccountCommand implements ICommand {
 
     @Override
     public void execute(MessageReceivedEvent event, List<String> params) {
-        int credits = 0;
+        int credits;
         long authorId = Long.parseLong(event.getAuthor().getId());
 
         try {
@@ -23,9 +23,9 @@ public class AccountCommand implements ICommand {
         } catch (IllegalArgumentException e) {
             accountService.createAccount(authorId);
             credits = AccountService.DEFAULT_CREDITS;
-        } finally {
-            response(event.getMessage(), credits);
         }
+
+        response(event.getMessage(), credits);
     }
 
     private void response(Message message, int credits) {
