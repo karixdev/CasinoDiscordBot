@@ -13,7 +13,7 @@ public class AccountRepository {
 
     private final Database database;
 
-    public void persist(Account account) {
+    public void create(Account account) {
         String sql = """
                 INSERT INTO account(discord_id, credits)
                 VALUES (?, ?)
@@ -24,8 +24,8 @@ public class AccountRepository {
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, account.discordId());
-            preparedStatement.setInt(2, account.credits());
+            preparedStatement.setInt(1, account.getDiscordId());
+            preparedStatement.setInt(2, account.getCredits());
 
             preparedStatement.execute();
         } catch (SQLException e) {
