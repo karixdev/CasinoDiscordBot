@@ -7,5 +7,5 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ICommand {
-    void execute() throws SQLException;
+    void execute(MessageReceivedEvent event, List<String> params) throws SQLException;
 }

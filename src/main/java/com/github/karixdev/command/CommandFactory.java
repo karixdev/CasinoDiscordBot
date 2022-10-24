@@ -15,13 +15,13 @@ public abstract class CommandFactory {
         this.accountService = accountService;
     }
 
-    protected abstract ICommand getCommand(AccountService accountService, MessageReceivedEvent event, List<String> params);
+    protected abstract ICommand createCommand(AccountService accountService, MessageReceivedEvent event, List<String> params);
 
-    public void execute(MessageReceivedEvent event, List<String> params) {
-        ICommand command = getCommand(accountService, event, params);
+    public void process(MessageReceivedEvent event, List<String> params) {
+        ICommand command = createCommand(accountService, event, params);
 
         try {
-            command.execute();
+            command.execute(event, params);
         } catch (SQLException e) {
             onFailure(event.getMessage());
         }
