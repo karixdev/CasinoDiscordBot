@@ -1,5 +1,6 @@
 package com.github.karixdev;
 
+import com.github.karixdev.account.AccountRepository;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.database.Database;
 import com.github.karixdev.discordbot.DiscordBot;
@@ -14,7 +15,8 @@ public class Main {
         Environment environment = new Environment(classloader);
         Database database = new Database(environment);
 
-        AccountService accountService = new AccountService(database);
+        AccountRepository accountRepository = new AccountRepository(database);
+        AccountService accountService = new AccountService(accountRepository);
 
         DiscordBot bot = new DiscordBot(environment, accountService);
         bot.run();

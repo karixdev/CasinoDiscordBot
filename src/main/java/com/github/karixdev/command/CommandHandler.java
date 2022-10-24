@@ -1,5 +1,6 @@
 package com.github.karixdev.command;
 
+import com.github.karixdev.account.AccountCommandFactory;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.database.Database;
 import net.dv8tion.jda.api.entities.Message;
@@ -20,6 +21,18 @@ public class CommandHandler {
         String command = args[0].substring(1);
 
         List<String> params = Arrays.stream(args).filter(arg -> !arg.equals(command)).toList();
+
+        CommandFactory commandFactory = null;
+
+        if (command.equals("account")) {
+            commandFactory = new AccountCommandFactory(accountService);
+        }
+
+        if (commandFactory == null) {
+            sendCommandNotFoundMessage(event.getMessage());
+        } else {
+            commandFactory.process(event, params);
+        }
     }
 
     private void sendCommandNotFoundMessage(Message message) {
