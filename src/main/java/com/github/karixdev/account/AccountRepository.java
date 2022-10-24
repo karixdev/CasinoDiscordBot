@@ -61,4 +61,28 @@ public class AccountRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public void update(Account account) {
+        String sql = """
+                UPDATE account
+                SET credits = ?
+                WHERE discord_id = ?
+                """;
+
+        try {
+            Connection connection = database.establishConnection();
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, account.getCredits());
+            preparedStatement.setInt(2, account.getDiscordId());
+
+            preparedStatement.execute();
+
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

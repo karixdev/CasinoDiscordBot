@@ -34,11 +34,22 @@ public class AccountRepositoryTest {
     }
 
     @Test
-    public void GivenDiscordId_WhenPersist_ThenPersistsUserToDatabase() {
+    public void GivenDiscordId_WhenCreate_ThenPersistsUserToDatabase() {
         Account account = new Account(11, 1000);
 
-        accountRepository.persist(account);
+        accountRepository.create(account);
 
         assertEquals(accountRepository.selectById(11), account);
+    }
+
+    @Test
+    public void GivenAccount_WhenUpdate_ThenUpdatesCorrectlyAccount() {
+        Account account = new Account(11, 1000);
+        accountRepository.create(account);
+        account.setCredits(1200);
+
+        accountRepository.update(account);
+
+        assertEquals(account, accountRepository.selectById(11));
     }
 }
