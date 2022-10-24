@@ -26,7 +26,7 @@ public class AccountRepositoryTest {
 
     @Test
     public void GivenNonExistingId_WhenSelectById_ThenReturnsNull() {
-        int id = 11;
+        long id = 11;
 
         Account result = accountRepository.selectById(id);
 

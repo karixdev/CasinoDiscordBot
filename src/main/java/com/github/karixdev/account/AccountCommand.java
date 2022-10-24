@@ -16,7 +16,7 @@ public class AccountCommand implements ICommand {
     @Override
     public void execute(MessageReceivedEvent event, List<String> params) {
         int credits = 0;
-        int authorId = Integer.parseInt(event.getAuthor().getId());
+        long authorId = Long.parseLong(event.getAuthor().getId());
 
         try {
             credits = accountService.getCredits(authorId);

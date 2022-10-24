@@ -24,7 +24,7 @@ public class AccountRepository {
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, account.getDiscordId());
+            preparedStatement.setLong(1, account.getDiscordId());
             preparedStatement.setInt(2, account.getCredits());
 
             preparedStatement.execute();
@@ -33,7 +33,7 @@ public class AccountRepository {
         }
     }
 
-    public Account selectById(int id) {
+    public Account selectById(long id) {
         String sql = """
                 SELECT *
                 FROM account
@@ -46,7 +46,7 @@ public class AccountRepository {
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
             preparedStatement.setMaxRows(1);
 
             ResultSet rs = preparedStatement.executeQuery();
@@ -55,7 +55,7 @@ public class AccountRepository {
                 return null;
             }
 
-            return new Account(rs.getInt("discord_id"), rs.getInt("credits"));
+            return new Account(rs.getLong("discord_id"), rs.getInt("credits"));
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -75,7 +75,7 @@ public class AccountRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setInt(1, account.getCredits());
-            preparedStatement.setInt(2, account.getDiscordId());
+            preparedStatement.setLong(2, account.getDiscordId());
 
             preparedStatement.execute();
 

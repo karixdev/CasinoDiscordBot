@@ -25,7 +25,7 @@ public class AccountServiceTest {
 
     @Test
     public void GivenNotExistingAccountDiscordId_WhenUpdateCredits_ThenThrowsIllegalArgumentException() {
-        int id = 11;
+        long id = 11;
         Account account = new Account(11, 1000);
 
         assertThrows(IllegalArgumentException.class, () -> accountService.updateCredits(account, 1237));
@@ -33,7 +33,7 @@ public class AccountServiceTest {
 
     @Test
     public void GivenExistingAccountDiscordId_WhenUpdateCredits_ThenReturnsUpdatedAccount() {
-        int id = 11;
+        long id = 11;
         Account account = new Account(11, 1000);
         accountService.createAccount(id);
 

@@ -10,6 +10,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Account {
-    private int discordId;
+    private long discordId;
     private int credits;
 }

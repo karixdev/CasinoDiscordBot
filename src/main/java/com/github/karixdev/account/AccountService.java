@@ -17,7 +17,7 @@ public class AccountService {
         this.repository = repository;
     }
 
-    public void createAccount(int discordId) {
+    public void createAccount(long discordId) {
         Account account = new Account(discordId, DEFAULT_CREDITS);
 
         repository.create(account);
@@ -34,7 +34,7 @@ public class AccountService {
         return account;
     }
 
-    public int getCredits(int discordId) {
+    public int getCredits(long discordId) {
         Account account = repository.selectById(discordId);
 
         if (account == null) {
