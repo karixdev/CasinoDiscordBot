@@ -1,0 +1,2 @@
+CREATE TABLE `casino`.`account` (`discord_id` BIGINT NOT NULL , `credits` INT NOT NULL , PRIMARY KEY (`discord_id`)) ENGINE = InnoDB;
+CREATE TABLE `casino_test`.`account` (`discord_id` BIGINT NOT NULL , `credits` INT NOT NULL , PRIMARY KEY (`discord_id`)) ENGINE = InnoDB;
