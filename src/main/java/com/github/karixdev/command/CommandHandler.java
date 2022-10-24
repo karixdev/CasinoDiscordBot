@@ -37,7 +37,7 @@ public class CommandHandler {
 
     private void sendCommandNotFoundMessage(Message message) {
         message
-                .reply("Command was not found")
+                .reply("Command was not found :face_with_monocle:")
                 .queue();
     }
 }
