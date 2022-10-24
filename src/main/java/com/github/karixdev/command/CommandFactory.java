@@ -27,7 +27,7 @@ public abstract class CommandFactory {
 
     protected void onFailure(Message message) {
         message
-                .reply("Something went wrong. Please try again later")
+                .reply("Something went wrong. Please try again later :exploding_head:")
                 .queue();
     }
 }
