@@ -9,77 +9,38 @@ import java.sql.SQLException;
 
 public class AccountService {
 
-    private final Database database;
+    private final AccountRepository repository;
 
     public final static int DEFAULT_CREDITS = 1000;
 
-    public AccountService(Database database) {
-        this.database = database;
+    public AccountService(AccountRepository repository) {
+        this.repository = repository;
     }
 
-    public void createAccount(int discordId) throws SQLException {
-        String sql = """
-                INSERT INTO account(discord_id, credits)
-                VALUES (?, ?)
-                """;
+    public void createAccount(int discordId) {
+        Account account = new Account(discordId, DEFAULT_CREDITS);
 
-        Connection connection = database.establishConnection();
-
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-        preparedStatement.setInt(1, discordId);
-        preparedStatement.setInt(2, DEFAULT_CREDITS);
-
-        preparedStatement.execute();
-
-        preparedStatement.close();
-        connection.close();
+        repository.create(account);
     }
 
-    public int updateCredits(int discordId, int newCredits) throws SQLException {
-        String sql = """
-                UPDATE account
-                SET credits = ?
-                WHERE discord_id = ?
-                """;
-
-        Connection connection = database.establishConnection();
-
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-        preparedStatement.setInt(1, newCredits);
-        preparedStatement.setInt(2, discordId);
-
-        preparedStatement.execute();
-
-        preparedStatement.close();
-        connection.close();
-
-        return newCredits;
-    }
-
-    public int getCredits(int discordId) throws SQLException {
-        String sql = """
-                SELECT credits
-                FROM account
-                WHERE discord_id = ?
-                LIMIT 1
-                """;
-
-        Connection connection = database.establishConnection();
-
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-        preparedStatement.setInt(1, discordId);
-        preparedStatement.setMaxRows(1);
-
-        ResultSet rs = preparedStatement.executeQuery();
-
-        if (!rs.next()) {
-            createAccount(discordId);
-            return DEFAULT_CREDITS;
+    public Account updateCredits(Account account, int newCredits) {
+        if (repository.selectById(account.getDiscordId()) == null) {
+            throw new IllegalArgumentException("Could not find account with that id");
         }
 
-        return rs.getInt("credits");
+        account.setCredits(newCredits);
+        repository.update(account);
+
+        return account;
+    }
+
+    public int getCredits(int discordId) {
+        Account account = repository.selectById(discordId);
+
+        if (account == null) {
+            throw new IllegalArgumentException("Could not find account with that id");
+        }
+
+        return account.getCredits();
     }
 }

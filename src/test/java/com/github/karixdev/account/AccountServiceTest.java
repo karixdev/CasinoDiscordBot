@@ -15,7 +15,7 @@ public class AccountServiceTest {
 
     @BeforeEach
     public void setup() throws IOException {
-        accountService = new AccountService(TestDatabase.getDatabase());
+        accountService = new AccountService(new AccountRepository(TestDatabase.getDatabase()));
     }
 
     @AfterEach
@@ -24,43 +24,22 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void GivenDiscordId_WhenCreateAccount_ThenDoesNotThrowSqlException() {
-        assertDoesNotThrow(() -> accountService.createAccount(11));
+    public void GivenNotExistingAccountDiscordId_WhenUpdateCredits_ThenThrowsIllegalArgumentException() {
+        int id = 11;
+        Account account = new Account(11, 1000);
+
+        assertThrows(IllegalArgumentException.class, () -> accountService.updateCredits(account, 1237));
     }
 
     @Test
-    public void GivenDiscordId_WhenUpdateCredits_ThenReturnsValidCredits() throws SQLException {
+    public void GivenExistingAccountDiscordId_WhenUpdateCredits_ThenReturnsUpdatedAccount() {
         int id = 11;
+        Account account = new Account(11, 1000);
         accountService.createAccount(id);
 
-        int result = accountService.updateCredits(id, 1237);
+        Account result = accountService.updateCredits(account, 1237);
 
-        assertEquals(1237, result);
-    }
-
-    @Test
-    public void GivenDiscordIdFromNonExistingAccount_WhenGetCredits_ThenReturnDefaultCredits() throws SQLException {
-        // given
-        int id = 11;
-
-        // when
-        int result = accountService.getCredits(id);
-
-        // then
-        assertEquals(AccountService.DEFAULT_CREDITS, result);
-    }
-
-    @Test
-    public void GivenDiscordIdFromExistingAccount_WhenGetCredits_ThenReturnValidCredits() throws SQLException {
-        // given
-        int id = 11;
-        accountService.createAccount(id);
-        accountService.updateCredits(id, 1237);
-
-        // when
-        int result = accountService.getCredits(id);
-
-        // then
-        assertEquals(1237, result);
+        account.setCredits(1237);
+        assertEquals(account, result);
     }
 }
