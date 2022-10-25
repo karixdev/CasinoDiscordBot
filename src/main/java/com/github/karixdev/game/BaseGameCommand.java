@@ -40,12 +40,14 @@ public abstract class BaseGameCommand implements ICommand {
                 .queue();
     }
 
-    protected void sendInvalidParamsMessage(Message message, String expectedInput) {
+    protected abstract String expectedInput();
+
+    protected void sendInvalidParamsMessage(Message message) {
         StringBuilder messageBuilder = new StringBuilder();
 
         messageBuilder
                 .append("You have provided wrong parameters. Expected: ")
-                .append(expectedInput)
+                .append(expectedInput())
                 .append(" :face_with_open_eyes_and_hand_over_mouth:");
 
         message
