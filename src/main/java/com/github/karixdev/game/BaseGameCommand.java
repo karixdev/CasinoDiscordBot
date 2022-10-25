@@ -18,12 +18,12 @@ public abstract class BaseGameCommand implements ICommand {
 
     protected void sendWinMessage(MessageChannelUnion channel, User user, int wonCredits) {
         sendGameResultMessage(channel, user, wonCredits,
-                "Congratulations you have won: ", " :partying_face: :champagne_glass:");
+                " Congratulations you have won: ", " credits :partying_face: :champagne_glass:");
     }
 
     protected void sendLossMessage(MessageChannelUnion channel, User user, int lostCredits) {
         sendGameResultMessage(channel, user, lostCredits,
-                "Sorry but you have lost: ", " :cry: :face_with_spiral_eyes:");
+                " Sorry but you have lost: ", " credits :cry: :face_with_spiral_eyes:");
     }
 
     private void sendGameResultMessage(MessageChannelUnion channel, User user, int credits, String message, String emojis) {
