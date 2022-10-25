@@ -54,4 +54,10 @@ public abstract class BaseGameCommand implements ICommand {
                 .reply(messageBuilder)
                 .queue();
     }
+
+    private boolean doesUserHaveEnoughMoney(long discordId, int credits) {
+        int usersCredits = accountService.getCredits(discordId);
+
+        return credits > 0 && usersCredits <= credits;
+    }
 }
