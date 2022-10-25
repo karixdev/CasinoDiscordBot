@@ -42,4 +42,10 @@ public class GameMessagesUtils {
                 .reply(messageBuilder)
                 .queue();
     }
+
+    public static void sendNotEnoughCreditsMessage(Message message) {
+        message
+                .reply("You dont have enough credits :pleading_face:")
+                .queue();
+    }
 }
