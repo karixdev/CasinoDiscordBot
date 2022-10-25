@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.nio.channels.Channel;
+import java.util.List;
 
 @RequiredArgsConstructor
 public abstract class BaseGameCommand implements ICommand {
@@ -36,6 +37,18 @@ public abstract class BaseGameCommand implements ICommand {
 
         channel
                 .sendMessage(messageBuilder)
+                .queue();
+    }
+
+    protected void sendInvalidParamsMessage(Message message, String expectedInput) {
+        StringBuilder messageBuilder = new StringBuilder();
+
+        messageBuilder
+                .append("You have provided wrong parameters. Expected: ")
+                .append(expectedInput);
+
+        message
+                .reply(messageBuilder)
                 .queue();
     }
 }
