@@ -45,7 +45,8 @@ public abstract class BaseGameCommand implements ICommand {
 
         messageBuilder
                 .append("You have provided wrong parameters. Expected: ")
-                .append(expectedInput);
+                .append(expectedInput)
+                .append(" :face_with_open_eyes_and_hand_over_mouth:");
 
         message
                 .reply(messageBuilder)
