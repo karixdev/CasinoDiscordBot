@@ -20,8 +20,14 @@ public class CommandHandler {
     public void handle(String[] args, MessageReceivedEvent event) {
         String command = args[0].substring(1);
 
-        List<String> params = Arrays.stream(args).filter(arg -> !arg.equals(command)).toList();
+        List<String> params = Arrays.stream(args)
+                .filter(arg -> !arg.equals(command))
+                .toList();
 
+        executeCertainCommand(command, params, event);
+    }
+
+    public void executeCertainCommand(String command, List<String> params, MessageReceivedEvent event) {
         CommandFactory commandFactory = null;
 
         if (command.equals("account")) {
