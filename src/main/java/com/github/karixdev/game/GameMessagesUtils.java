@@ -1,5 +1,6 @@
 package com.github.karixdev.game;
 
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
@@ -27,5 +28,18 @@ public class GameMessagesUtils {
     public static void sendLossMessage(MessageChannelUnion channel, User user, int lostCredits) {
         sendGameResultMessage(channel, user, lostCredits,
                 " Sorry but you have lost: ", " credits :cry: :face_with_spiral_eyes:");
+    }
+
+    public static void sendInvalidParamsMessage(Message message, String content) {
+        StringBuilder messageBuilder = new StringBuilder();
+
+        messageBuilder
+                .append("You have provided wrong parameters. Expected: ")
+                .append(content)
+                .append(" :face_with_open_eyes_and_hand_over_mouth:");
+
+        message
+                .reply(messageBuilder)
+                .queue();
     }
 }
