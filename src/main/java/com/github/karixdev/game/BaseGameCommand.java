@@ -21,6 +21,8 @@ public abstract class BaseGameCommand implements ICommand {
 
     protected abstract void play(MessageReceivedEvent event, String param, int credits, Account account);
 
+    protected abstract int estimateLoss(String param, int credits);
+
     @Override
     public void execute(MessageReceivedEvent event, List<String> params) {
         if (params.size() == 0 || params.size() < 3) {
@@ -40,7 +42,7 @@ public abstract class BaseGameCommand implements ICommand {
         Account account = accountService.get(authorId);
         int userCredits = account.getCredits();
 
-        if (!doesUserHaveEnoughCredits(account, credits)) {
+        if (account.getCredits() <= 0 || account.getCredits() < estimateLoss(param, credits)) {
             GameMessagesUtils.sendNotEnoughCreditsMessage(event.getMessage());
             return;
         }
@@ -49,9 +51,5 @@ public abstract class BaseGameCommand implements ICommand {
         if (userCredits != account.getCredits()) {
             accountService.updateCredits(account, account.getCredits());
         }
-    }
-
-    private boolean doesUserHaveEnoughCredits(Account account, int credits) {
-        return account.getCredits() > 0 && account.getCredits() >= credits;
     }
 }

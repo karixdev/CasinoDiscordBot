@@ -7,7 +7,6 @@ import com.github.karixdev.game.GameMessagesUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class CoinFlipCommand extends BaseGameCommand {
@@ -43,5 +42,10 @@ public class CoinFlipCommand extends BaseGameCommand {
         }
 
         account.setCredits(newCredits);
+    }
+
+    @Override
+    protected int estimateLoss(String param, int credits) {
+        return credits;
     }
 }
