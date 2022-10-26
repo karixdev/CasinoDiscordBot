@@ -3,6 +3,7 @@ package com.github.karixdev.game.coinflip;
 import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.game.BaseGameCommand;
+import com.github.karixdev.game.GameCommandValidator;
 import com.github.karixdev.game.GameMessagesUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -20,13 +21,18 @@ public class CoinFlipCommand extends BaseGameCommand {
     }
 
     @Override
+    protected int estimateLoss(String param, int credits) {
+        return credits;
+    }
+
+    @Override
+    protected GameCommandValidator getValidator() {
+        return new CoinFlipCommandValidator();
+    }
+
+    @Override
     protected void play(MessageReceivedEvent event, String param, int credits, Account account) {
         String[] options = {"heads", "tails"};
-
-        if (!Arrays.asList(options).contains(param)) {
-            GameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
-            return;
-        }
 
         Random random = new Random();
         int winner = Math.abs(random.nextInt() % 2);
@@ -42,10 +48,5 @@ public class CoinFlipCommand extends BaseGameCommand {
         }
 
         account.setCredits(newCredits);
-    }
-
-    @Override
-    protected int estimateLoss(String param, int credits) {
-        return credits;
     }
 }

@@ -23,6 +23,8 @@ public abstract class BaseGameCommand implements ICommand {
 
     protected abstract int estimateLoss(String param, int credits);
 
+    protected abstract GameCommandValidator getValidator();
+
     @Override
     public void execute(MessageReceivedEvent event, List<String> params) {
         if (params.size() == 0 || params.size() < 3) {
@@ -34,7 +36,7 @@ public abstract class BaseGameCommand implements ICommand {
         int credits = Integer.parseInt(params.get(2));
         long authorId = event.getAuthor().getIdLong();
 
-        if (credits <= 0) {
+        if (credits <= 0 || !getValidator().isParamValid(param)) {
             GameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
             return;
         }
