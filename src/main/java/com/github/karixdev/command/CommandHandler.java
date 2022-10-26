@@ -3,6 +3,8 @@ package com.github.karixdev.command;
 import com.github.karixdev.account.AccountCommandFactory;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.database.Database;
+import com.github.karixdev.game.GameCommandFactoryManager;
+import com.github.karixdev.game.coinflip.CoinFlipCommandFactory;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -32,6 +34,9 @@ public class CommandHandler {
 
         if (command.equals("account")) {
             commandFactory = new AccountCommandFactory(accountService);
+        } else if (command.equals("game")) {
+            GameCommandFactoryManager gameCommandFactoryManager = new GameCommandFactoryManager(accountService);
+            commandFactory = gameCommandFactoryManager.chooseFactory(params);
         }
 
         if (commandFactory == null) {

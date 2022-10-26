@@ -5,13 +5,12 @@ import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @RequiredArgsConstructor
 public abstract class CommandFactory {
 
-    private final AccountService accountService;
+    protected final AccountService accountService;
 
     protected abstract ICommand createCommand(AccountService accountService, MessageReceivedEvent event, List<String> params);
 
@@ -22,6 +21,7 @@ public abstract class CommandFactory {
             command.execute(event, params);
         } catch (RuntimeException e) {
             onFailure(event.getMessage());
+            e.printStackTrace();
         }
     }
 
