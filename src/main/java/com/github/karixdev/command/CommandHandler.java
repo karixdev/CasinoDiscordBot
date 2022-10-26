@@ -21,7 +21,7 @@ public class CommandHandler {
         String command = args[0].substring(1);
 
         List<String> params = Arrays.stream(args)
-                .filter(arg -> !arg.equals(command))
+                .filter(arg -> !arg.equals(args[0]))
                 .toList();
 
         executeCertainCommand(command, params, event);
