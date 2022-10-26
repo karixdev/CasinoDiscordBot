@@ -28,6 +28,6 @@ public class RussianRouletteCommand extends BaseGameCommand {
 
     @Override
     protected GameCommandValidator getValidator() {
-        return null;
+        return new RussianRouletteCommandValidator();
     }
 }
