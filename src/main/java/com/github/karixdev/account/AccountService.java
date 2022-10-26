@@ -43,4 +43,8 @@ public class AccountService {
 
         return account.getCredits();
     }
+
+    public Account get(long discordId) {
+        return repository.selectById(discordId);
+    }
 }
