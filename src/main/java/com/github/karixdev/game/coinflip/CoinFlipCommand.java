@@ -40,10 +40,8 @@ public class CoinFlipCommand extends BaseGameCommand {
         int newCredits = account.getCredits();
 
         if (options[winner].equals(param)) {
-            GameMessagesUtils.sendWinMessage(event.getChannel(), event.getAuthor(), credits);
             newCredits += credits;
         } else {
-            GameMessagesUtils.sendLossMessage(event.getChannel(), event.getAuthor(), credits);
             newCredits -= credits;
         }
 

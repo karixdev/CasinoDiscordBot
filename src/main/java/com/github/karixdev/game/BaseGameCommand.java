@@ -38,7 +38,7 @@ public abstract class BaseGameCommand implements ICommand {
         }
 
         Account account = accountService.get(authorId);
-        int userCredits = account.getCredits();
+        int oldCredits = account.getCredits();
 
         if (account.getCredits() <= 0 || account.getCredits() < estimateMaximumLoss(param, credits)) {
             GameMessagesUtils.sendNotEnoughCreditsMessage(event.getMessage());
@@ -46,8 +46,13 @@ public abstract class BaseGameCommand implements ICommand {
         }
 
         play(event, param, credits, account);
-        if (userCredits != account.getCredits()) {
-            accountService.updateCredits(account, account.getCredits());
+        accountService.updateCredits(account, account.getCredits());
+        int difference = account.getCredits() - oldCredits;
+
+        if (difference > 0) {
+            GameMessagesUtils.sendWinMessage(event.getChannel(), event.getAuthor(), difference);
+        } else {
+            GameMessagesUtils.sendLossMessage(event.getChannel(), event.getAuthor(), Math.abs(difference));
         }
     }
 }
