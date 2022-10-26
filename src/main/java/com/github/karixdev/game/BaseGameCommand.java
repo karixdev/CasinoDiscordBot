@@ -1,5 +1,6 @@
 package com.github.karixdev.game;
 
+import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.command.ICommand;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public abstract class BaseGameCommand implements ICommand {
 
     protected abstract String expectedInput();
 
-    protected abstract void play(MessageReceivedEvent event, String param, int credits);
+    protected abstract void play(MessageReceivedEvent event, String param, int credits, Account account);
 
     @Override
     public void execute(MessageReceivedEvent event, List<String> params) {
@@ -36,17 +37,21 @@ public abstract class BaseGameCommand implements ICommand {
             return;
         }
 
-        if (!doesUserHaveEnoughCredits(authorId, credits)) {
+        Account account = accountService.get(authorId);
+        int userCredits = account.getCredits();
+
+        if (!doesUserHaveEnoughCredits(account, credits)) {
             GameMessagesUtils.sendNotEnoughCreditsMessage(event.getMessage());
             return;
         }
 
-        play(event, param, credits);
+        play(event, param, credits, account);
+        if (userCredits != account.getCredits()) {
+            accountService.updateCredits(account, account.getCredits());
+        }
     }
 
-    private boolean doesUserHaveEnoughCredits(long discordId, int credits) {
-        int userCredits = accountService.getCredits(discordId);
-
-        return userCredits > 0 && userCredits <= credits;
+    private boolean doesUserHaveEnoughCredits(Account account, int credits) {
+        return account.getCredits() > 0 && account.getCredits() >= credits;
     }
 }
