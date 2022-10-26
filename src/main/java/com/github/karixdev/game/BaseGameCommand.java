@@ -16,48 +16,37 @@ public abstract class BaseGameCommand implements ICommand {
 
     protected final AccountService accountService;
 
-    protected void sendWinMessage(MessageChannelUnion channel, User user, int wonCredits) {
-        sendGameResultMessage(channel, user, wonCredits,
-                " Congratulations you have won: ", " credits :partying_face: :champagne_glass:");
-    }
-
-    protected void sendLossMessage(MessageChannelUnion channel, User user, int lostCredits) {
-        sendGameResultMessage(channel, user, lostCredits,
-                " Sorry but you have lost: ", " credits :cry: :face_with_spiral_eyes:");
-    }
-
-    private void sendGameResultMessage(MessageChannelUnion channel, User user, int credits, String message, String emojis) {
-        StringBuilder messageBuilder = new StringBuilder();
-
-        messageBuilder
-                .append(user.getAsMention())
-                .append(message)
-                .append(credits)
-                .append(emojis);
-
-        channel
-                .sendMessage(messageBuilder)
-                .queue();
-    }
-
     protected abstract String expectedInput();
 
-    protected void sendInvalidParamsMessage(Message message) {
-        StringBuilder messageBuilder = new StringBuilder();
+    protected abstract void play(MessageReceivedEvent event, String param, int credits);
 
-        messageBuilder
-                .append("You have provided wrong parameters. Expected: ")
-                .append(expectedInput())
-                .append(" :face_with_open_eyes_and_hand_over_mouth:");
+    @Override
+    public void execute(MessageReceivedEvent event, List<String> params) {
+        if (params.size() == 0 || params.size() < 3) {
+            GameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
+            return;
+        }
 
-        message
-                .reply(messageBuilder)
-                .queue();
+        String param = params.get(1);
+        int credits = Integer.parseInt(params.get(2));
+        long authorId = event.getAuthor().getIdLong();
+
+        if (credits <= 0) {
+            GameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
+            return;
+        }
+
+        if (!doesUserHaveEnoughCredits(authorId, credits)) {
+            GameMessagesUtils.sendNotEnoughCreditsMessage(event.getMessage());
+            return;
+        }
+
+        play(event, param, credits);
     }
 
-    private boolean doesUserHaveEnoughMoney(long discordId, int credits) {
-        int usersCredits = accountService.getCredits(discordId);
+    private boolean doesUserHaveEnoughCredits(long discordId, int credits) {
+        int userCredits = accountService.getCredits(discordId);
 
-        return credits > 0 && usersCredits <= credits;
+        return userCredits > 0 && userCredits <= credits;
     }
 }
