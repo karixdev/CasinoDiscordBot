@@ -23,7 +23,8 @@ public class RussianRouletteCommand extends BaseGameCommand {
 
     @Override
     protected int estimateMaximumLoss(String param, int credits) {
-        return 0;
+        int shots = Integer.parseInt(param);
+        return shots * credits;
     }
 
     @Override
