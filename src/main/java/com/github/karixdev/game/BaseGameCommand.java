@@ -17,8 +17,6 @@ public abstract class BaseGameCommand implements ICommand {
 
     protected abstract void play(MessageReceivedEvent event, String param, int credits, Account account);
 
-    protected abstract int estimateMaximumLoss(String param, int credits);
-
     protected abstract GameCommandValidator getValidator();
 
     @Override
@@ -40,7 +38,7 @@ public abstract class BaseGameCommand implements ICommand {
         Account account = accountService.get(authorId);
         int oldCredits = account.getCredits();
 
-        if (account.getCredits() <= 0 || account.getCredits() < estimateMaximumLoss(param, credits)) {
+        if (account.getCredits() <= 0 || account.getCredits() < credits) {
             GameMessagesUtils.sendNotEnoughCreditsMessage(event.getMessage());
             return;
         }

@@ -26,19 +26,13 @@ public class RussianRouletteCommand extends BaseGameCommand {
         Random random = new Random();
         int bulletPositionInChamber = random.nextInt(1, 6) + 1;
 
-        int expectedCredits = shots * credits;
+        int expectedWin = shots * credits;
 
         if (shots < bulletPositionInChamber) {
-            account.setCredits(account.getCredits() + expectedCredits);
+            account.setCredits(account.getCredits() + expectedWin);
         } else {
-            account.setCredits(account.getCredits() - expectedCredits);
+            account.setCredits(account.getCredits() - credits);
         }
-    }
-
-    @Override
-    protected int estimateMaximumLoss(String param, int credits) {
-        int shots = Integer.parseInt(param);
-        return shots * credits;
     }
 
     @Override

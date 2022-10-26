@@ -3,6 +3,7 @@ package com.github.karixdev.game;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.command.CommandFactory;
 import com.github.karixdev.game.coinflip.CoinFlipCommandFactory;
+import com.github.karixdev.game.russianroulette.RussianRouletteCommandFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -17,10 +18,12 @@ public class GameCommandFactoryManager {
             // TODO: send "you have to choose game" message
         }
 
-        if (params.get(0).equals("coinflip")) {
-            return new CoinFlipCommandFactory(accountService);
-        }
+        String game = params.get(0);
 
-        return null;
+        return switch (game) {
+            case "coin-flip" -> new CoinFlipCommandFactory(accountService);
+            case "russian-roulette" -> new RussianRouletteCommandFactory(accountService);
+            default -> null;
+        };
     }
 }

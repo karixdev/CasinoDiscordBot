@@ -21,11 +21,6 @@ public class CoinFlipCommand extends BaseGameCommand {
     }
 
     @Override
-    protected int estimateMaximumLoss(String param, int credits) {
-        return credits;
-    }
-
-    @Override
     protected GameCommandValidator getValidator() {
         return new CoinFlipCommandValidator();
     }
