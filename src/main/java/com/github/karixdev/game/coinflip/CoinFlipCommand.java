@@ -21,7 +21,7 @@ public class CoinFlipCommand extends BaseGameCommand {
     }
 
     @Override
-    protected int estimateLoss(String param, int credits) {
+    protected int estimateMaximumLoss(String param, int credits) {
         return credits;
     }
 

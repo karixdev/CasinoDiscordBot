@@ -4,12 +4,8 @@ import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.command.ICommand;
 import lombok.RequiredArgsConstructor;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.nio.channels.Channel;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,7 +17,7 @@ public abstract class BaseGameCommand implements ICommand {
 
     protected abstract void play(MessageReceivedEvent event, String param, int credits, Account account);
 
-    protected abstract int estimateLoss(String param, int credits);
+    protected abstract int estimateMaximumLoss(String param, int credits);
 
     protected abstract GameCommandValidator getValidator();
 
@@ -44,7 +40,7 @@ public abstract class BaseGameCommand implements ICommand {
         Account account = accountService.get(authorId);
         int userCredits = account.getCredits();
 
-        if (account.getCredits() <= 0 || account.getCredits() < estimateLoss(param, credits)) {
+        if (account.getCredits() <= 0 || account.getCredits() < estimateMaximumLoss(param, credits)) {
             GameMessagesUtils.sendNotEnoughCreditsMessage(event.getMessage());
             return;
         }
