@@ -13,7 +13,7 @@ public class RussianRouletteCommand extends BaseGameCommand {
 
     @Override
     protected String expectedInput() {
-        return null;
+        return "shots_num credits. There are 6 bullets in chamber. Credits must be greater than 0.";
     }
 
     @Override
