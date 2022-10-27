@@ -11,15 +11,12 @@ public class AccountService {
 
     private final AccountRepository repository;
 
-    public final static int DEFAULT_CREDITS = 1000;
-
     public AccountService(AccountRepository repository) {
         this.repository = repository;
     }
 
     public void createAccount(long discordId) {
-        Account account = new Account(discordId, DEFAULT_CREDITS);
-
+        Account account = new Account(discordId);
         repository.create(account);
     }
 
@@ -53,7 +50,7 @@ public class AccountService {
 
         if (account == null) {
             createAccount(discordId);
-            account = new Account(discordId, AccountService.DEFAULT_CREDITS);
+            account = new Account(discordId);
         }
 
         return account;
