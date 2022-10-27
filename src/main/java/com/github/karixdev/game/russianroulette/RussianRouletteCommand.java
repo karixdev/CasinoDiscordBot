@@ -39,4 +39,9 @@ public class RussianRouletteCommand extends BaseGameCommand {
     protected GameCommandValidator getValidator() {
         return new RussianRouletteCommandValidator();
     }
+
+    @Override
+    public String getTemplateCommand() {
+        return "!russian shots_num[0; 5] credits[>0]";
+    }
 }

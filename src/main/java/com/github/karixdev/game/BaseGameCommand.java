@@ -3,6 +3,7 @@ package com.github.karixdev.game;
 import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.command.ICommand;
+import com.github.karixdev.validator.Validator;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -22,11 +23,6 @@ public abstract class BaseGameCommand implements ICommand {
     @Override
     public void execute(Account account, MessageReceivedEvent event, List<String> params) {
         GameMessagesUtils gameMessagesUtils = new GameMessagesUtils(event.getMessage());
-
-        if (params.size() < 2) {
-            gameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
-            return;
-        }
 
         String param = params.get(0);
         int credits = Integer.parseInt(params.get(1));
@@ -52,5 +48,10 @@ public abstract class BaseGameCommand implements ICommand {
         } else {
             gameMessagesUtils.sendLossMessage(Math.abs(difference));
         }
+    }
+
+    @Override
+    public int expectedParamsCount() {
+        return 2;
     }
 }

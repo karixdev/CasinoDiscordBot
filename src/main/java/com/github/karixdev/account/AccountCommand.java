@@ -18,6 +18,16 @@ public class AccountCommand implements ICommand {
         response(event.getMessage(), account.getCredits());
     }
 
+    @Override
+    public int expectedParamsCount() {
+        return 0;
+    }
+
+    @Override
+    public String getTemplateCommand() {
+        return "!account";
+    }
+
     private void response(Message message, int credits) {
         message
                 .reply("You have: " + credits + " credits :moneybag:")

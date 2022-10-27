@@ -40,4 +40,9 @@ public class CoinFlipCommand extends BaseGameCommand {
 
         account.setCredits(newCredits);
     }
+
+    @Override
+    public String getTemplateCommand() {
+        return "!coin-flip side[heads/tails] credits[>0]";
+    }
 }

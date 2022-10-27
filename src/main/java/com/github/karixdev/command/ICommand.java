@@ -9,4 +9,7 @@ import java.util.List;
 
 public interface ICommand {
     void execute(Account account, MessageReceivedEvent event, List<String> params);
+    int expectedParamsCount();
+
+    String getTemplateCommand();
 }
