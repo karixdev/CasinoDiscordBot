@@ -21,6 +21,13 @@ public abstract class CommandFactory {
         long authorId = event.getAuthor().getIdLong();
         Account account = accountService.getAccountIfNotExistsCreateOne(authorId);
 
+        if (params.size() < command.expectedParamsCount()) {
+            event.getMessage()
+                    .reply("Invalid command. Expected: " + command.getTemplateCommand())
+                    .queue();
+            return;
+        }
+
         try {
             command.execute(account, event, params);
         } catch (RuntimeException e) {
