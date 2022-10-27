@@ -22,14 +22,14 @@ public abstract class BaseGameCommand extends AbstractCommand {
         gameDataDto = new GameDataDtoAdapter(params);
     }
 
-    protected abstract void play(MessageReceivedEvent event, String param, int credits, Account account);
+    protected abstract void play();
 
     @Override
     public void execute(MessageReceivedEvent event) {
         GameMessagesUtils gameMessagesUtils = new GameMessagesUtils(event.getMessage());
 
         int oldCredits = getAccount().getCredits();
-        play(event, gameDataDto.getParam(), gameDataDto.getCredits(), getAccount());
+        play();
         accountService.updateCredits(getAccount(), getAccount().getCredits());
         int difference = getAccount().getCredits() - oldCredits;
 

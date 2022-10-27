@@ -33,7 +33,7 @@ public abstract class CommandFactory {
             }
         } else {
             event.getMessage()
-                    .reply("You have passed wrong data. Expected: " + command.getTemplateCommand())
+                    .reply("You have passed wrong data. Expected: " + command.getTemplateCommand() + ". Also you must have enough money :wink:")
                     .queue();
         }
     }
