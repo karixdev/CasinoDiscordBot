@@ -1,5 +1,6 @@
 package com.github.karixdev.command;
 
+import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Message;
@@ -17,8 +18,11 @@ public abstract class CommandFactory {
     public void process(MessageReceivedEvent event, List<String> params) {
         ICommand command = createCommand(accountService, event, params);
 
+        long authorId = event.getAuthor().getIdLong();
+        Account account = accountService.getAccountIfNotExistsCreateOne(authorId);
+
         try {
-            command.execute(event, params);
+            command.execute(account, event, params);
         } catch (RuntimeException e) {
             onFailure(event.getMessage());
             e.printStackTrace();

@@ -20,7 +20,7 @@ public abstract class BaseGameCommand implements ICommand {
     protected abstract GameCommandValidator getValidator();
 
     @Override
-    public void execute(MessageReceivedEvent event, List<String> params) {
+    public void execute(Account account, MessageReceivedEvent event, List<String> params) {
         if (params.size() == 0 || params.size() < 3) {
             GameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
             return;
@@ -28,14 +28,12 @@ public abstract class BaseGameCommand implements ICommand {
 
         String param = params.get(1);
         int credits = Integer.parseInt(params.get(2));
-        long authorId = event.getAuthor().getIdLong();
 
         if (credits <= 0 || !getValidator().isParamValid(param)) {
             GameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
             return;
         }
 
-        Account account = accountService.get(authorId);
         int oldCredits = account.getCredits();
 
         if (account.getCredits() <= 0 || account.getCredits() < credits) {

@@ -47,4 +47,15 @@ public class AccountService {
     public Account get(long discordId) {
         return repository.selectById(discordId);
     }
+
+    public Account getAccountIfNotExistsCreateOne(long discordId) {
+        Account account = repository.selectById(discordId);
+
+        if (account == null) {
+            createAccount(discordId);
+            account = new Account(discordId, AccountService.DEFAULT_CREDITS);
+        }
+
+        return account;
+    }
 }
