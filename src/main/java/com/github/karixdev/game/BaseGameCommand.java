@@ -3,7 +3,6 @@ package com.github.karixdev.game;
 import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.command.ICommand;
-import com.github.karixdev.validator.Validator;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 

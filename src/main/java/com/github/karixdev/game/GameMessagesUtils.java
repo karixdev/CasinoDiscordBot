@@ -2,9 +2,6 @@ package com.github.karixdev.game;
 
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 public class GameMessagesUtils {
