@@ -13,11 +13,19 @@ public class GameDataDtoAdapter implements GameDataDto {
 
     @Override
     public String getParam() {
-        return params.get(0);
+        try {
+            return params.get(0);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     @Override
     public int getCredits() {
-        return Integer.parseInt(params.get(1));
+        try {
+            return Integer.parseInt(params.get(1));
+        } catch (IndexOutOfBoundsException e) {
+            return 0;
+        }
     }
 }

@@ -41,7 +41,7 @@ public class RussianRouletteCommand extends BaseGameCommand {
     }
 
     @Override
-    public List<Constraint> getConstraint() {
+    public List<Constraint> getConstraints() {
         return null;
     }
 }
