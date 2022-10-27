@@ -13,23 +13,16 @@ public abstract class CommandFactory {
 
     protected final AccountService accountService;
 
-    protected abstract ICommand createCommand(AccountService accountService, MessageReceivedEvent event, List<String> params);
+    protected abstract ICommand createCommand(AccountService accountService, Account account, List<String> params);
 
     public void process(MessageReceivedEvent event, List<String> params) {
-        ICommand command = createCommand(accountService, event, params);
-
         long authorId = event.getAuthor().getIdLong();
         Account account = accountService.getAccountIfNotExistsCreateOne(authorId);
 
-        if (params.size() < command.expectedParamsCount()) {
-            event.getMessage()
-                    .reply("Invalid command. Expected: " + command.getTemplateCommand())
-                    .queue();
-            return;
-        }
+        ICommand command = createCommand(accountService, account, params);
 
         try {
-            command.execute(account, event, params);
+            command.execute(event);
         } catch (RuntimeException e) {
             onFailure(event.getMessage());
             e.printStackTrace();

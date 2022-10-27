@@ -1,30 +1,33 @@
 package com.github.karixdev.account;
 
+import com.github.karixdev.command.AbstractCommand;
 import com.github.karixdev.command.ICommand;
+import com.github.karixdev.validator.Constraint;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
-@RequiredArgsConstructor
-public class AccountCommand implements ICommand {
+public class AccountCommand extends AbstractCommand {
 
-    private final AccountService accountService;
-
-    @Override
-    public void execute(Account account, MessageReceivedEvent event, List<String> params) {
-        response(event.getMessage(), account.getCredits());
+    public AccountCommand(AccountService accountService, Account account, List<String> params) {
+        super(accountService, account, params);
     }
 
     @Override
-    public int expectedParamsCount() {
-        return 0;
+    public void execute(MessageReceivedEvent event) {
+        response(event.getMessage(), getAccount().getCredits());
     }
 
     @Override
     public String getTemplateCommand() {
         return "!account";
+    }
+
+    @Override
+    public List<Constraint> getConstraint() {
+        return null;
     }
 
     private void response(Message message, int credits) {

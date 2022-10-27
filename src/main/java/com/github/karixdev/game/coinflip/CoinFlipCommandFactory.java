@@ -1,5 +1,6 @@
 package com.github.karixdev.game.coinflip;
 
+import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.command.CommandFactory;
 import com.github.karixdev.command.ICommand;
@@ -13,7 +14,7 @@ public class CoinFlipCommandFactory extends CommandFactory {
     }
 
     @Override
-    protected ICommand createCommand(AccountService accountService, MessageReceivedEvent event, List<String> params) {
-        return new CoinFlipCommand(accountService);
+    protected ICommand createCommand(AccountService accountService, Account account, List<String> params) {
+        return new CoinFlipCommand(accountService, account, params);
     }
 }

@@ -12,7 +12,7 @@ public class AccountCommandFactory extends CommandFactory {
     }
 
     @Override
-    protected ICommand createCommand(AccountService accountService, MessageReceivedEvent event, List<String> params) {
-        return new AccountCommand(accountService);
+    protected ICommand createCommand(AccountService accountService, Account account, List<String> params) {
+        return new AccountCommand(accountService, account, params);
     }
 }

@@ -3,24 +3,19 @@ package com.github.karixdev.game.coinflip;
 import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.game.BaseGameCommand;
-import com.github.karixdev.game.GameCommandValidator;
+import com.github.karixdev.validator.Constraint;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.util.List;
 import java.util.Random;
 
 public class CoinFlipCommand extends BaseGameCommand {
-    public CoinFlipCommand(AccountService accountService) {
-        super(accountService);
-    }
 
-    @Override
-    protected String expectedInput() {
-        return "heads/tails credits. Credits must be greater than 0.";
-    }
-
-    @Override
-    protected GameCommandValidator getValidator() {
-        return new CoinFlipCommandValidator();
+    public CoinFlipCommand(AccountService accountService, Account account, List<String> params) {
+        super(accountService, account, params);
     }
 
     @Override
@@ -44,5 +39,10 @@ public class CoinFlipCommand extends BaseGameCommand {
     @Override
     public String getTemplateCommand() {
         return "!coin-flip side[heads/tails] credits[>0]";
+    }
+
+    @Override
+    public List<Constraint> getConstraint() {
+        return super.getConstraint();
     }
 }
