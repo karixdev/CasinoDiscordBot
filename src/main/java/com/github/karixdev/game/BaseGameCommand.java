@@ -21,13 +21,13 @@ public abstract class BaseGameCommand implements ICommand {
 
     @Override
     public void execute(Account account, MessageReceivedEvent event, List<String> params) {
-        if (params.size() == 0 || params.size() < 3) {
+        if (params.size() < 2) {
             GameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
             return;
         }
 
-        String param = params.get(1);
-        int credits = Integer.parseInt(params.get(2));
+        String param = params.get(0);
+        int credits = Integer.parseInt(params.get(1));
 
         if (credits <= 0 || !getValidator().isParamValid(param)) {
             GameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
