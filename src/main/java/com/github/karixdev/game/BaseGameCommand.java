@@ -2,45 +2,41 @@ package com.github.karixdev.game;
 
 import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
+import com.github.karixdev.command.AbstractCommand;
 import com.github.karixdev.command.ICommand;
+import com.github.karixdev.validator.Constraint;
+import com.github.karixdev.validator.CreditsConstraint;
+import com.github.karixdev.validator.EnoughCreditsConstraint;
+import com.github.karixdev.validator.ParamsListSizeConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.beans.ConstructorProperties;
 import java.util.List;
 
-@RequiredArgsConstructor
-public abstract class BaseGameCommand implements ICommand {
+@Getter
+public abstract class BaseGameCommand extends AbstractCommand {
 
-    protected final AccountService accountService;
+    private final GameDataDto gameDataDto;
 
-    protected abstract String expectedInput();
+    public BaseGameCommand(AccountService accountService, Account account, List<String> params) {
+        super(accountService, account, params);
+        gameDataDto = new GameDataDtoAdapter(params);
+    }
 
     protected abstract void play(MessageReceivedEvent event, String param, int credits, Account account);
 
-    protected abstract GameCommandValidator getValidator();
-
     @Override
-    public void execute(Account account, MessageReceivedEvent event, List<String> params) {
+    public void execute(MessageReceivedEvent event) {
         GameMessagesUtils gameMessagesUtils = new GameMessagesUtils(event.getMessage());
 
-        String param = params.get(0);
-        int credits = Integer.parseInt(params.get(1));
-
-        if (credits <= 0 || !getValidator().isParamValid(param)) {
-            gameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
-            return;
-        }
-
-        int oldCredits = account.getCredits();
-
-        if (account.getCredits() <= 0 || account.getCredits() < credits) {
-            gameMessagesUtils.sendNotEnoughCreditsMessage(event.getMessage());
-            return;
-        }
-
-        play(event, param, credits, account);
-        accountService.updateCredits(account, account.getCredits());
-        int difference = account.getCredits() - oldCredits;
+        int oldCredits = getAccount().getCredits();
+        play(event, gameDataDto.getParam(), gameDataDto.getCredits(), getAccount());
+        accountService.updateCredits(getAccount(), getAccount().getCredits());
+        int difference = getAccount().getCredits() - oldCredits;
 
         if (difference > 0) {
             gameMessagesUtils.sendWinMessage(difference);
@@ -50,7 +46,11 @@ public abstract class BaseGameCommand implements ICommand {
     }
 
     @Override
-    public int expectedParamsCount() {
-        return 2;
+    public List<Constraint> getConstraint() {
+        return List.of(
+                new ParamsListSizeConstraint(getParams(), 2),
+                new CreditsConstraint(gameDataDto.getCredits()),
+                new EnoughCreditsConstraint(getAccount(), gameDataDto.getCredits())
+        );
     }
 }

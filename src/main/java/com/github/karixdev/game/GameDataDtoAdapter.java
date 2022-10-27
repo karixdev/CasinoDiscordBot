@@ -1,10 +1,12 @@
 package com.github.karixdev.game;
 
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@ToString
 public class GameDataDtoAdapter implements GameDataDto {
 
     private final List<String> params;
