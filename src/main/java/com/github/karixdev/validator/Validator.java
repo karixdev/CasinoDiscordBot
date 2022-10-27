@@ -9,9 +9,13 @@ public class Validator {
     private final List<Constraint> constraints;
 
     public boolean isValid() {
-        return constraints.stream()
-                .filter(Constraint::isValid)
-                .toList()
-                .size() == constraints.size();
+        System.out.println(constraints);
+        for (Constraint constraint : constraints) {
+            if (!constraint.isValid()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

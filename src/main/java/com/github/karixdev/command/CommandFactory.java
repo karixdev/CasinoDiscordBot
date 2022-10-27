@@ -2,6 +2,7 @@ package com.github.karixdev.command;
 
 import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
+import com.github.karixdev.validator.Validator;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -21,11 +22,19 @@ public abstract class CommandFactory {
 
         ICommand command = createCommand(accountService, account, params);
 
-        try {
-            command.execute(event);
-        } catch (RuntimeException e) {
-            onFailure(event.getMessage());
-            e.printStackTrace();
+        Validator validator = new Validator(command.getConstraints());
+
+        if (validator.isValid()) {
+            try {
+                command.execute(event);
+            } catch (RuntimeException e) {
+                onFailure(event.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            event.getMessage()
+                    .reply("You have passed wrong data. Expected: " + command.getTemplateCommand())
+                    .queue();
         }
     }
 

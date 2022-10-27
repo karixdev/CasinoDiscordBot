@@ -26,8 +26,8 @@ public class AccountCommand extends AbstractCommand {
     }
 
     @Override
-    public List<Constraint> getConstraint() {
-        return null;
+    public List<Constraint> getConstraints() {
+        return List.of();
     }
 
     private void response(Message message, int credits) {

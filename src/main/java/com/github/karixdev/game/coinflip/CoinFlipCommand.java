@@ -4,9 +4,6 @@ import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.game.BaseGameCommand;
 import com.github.karixdev.validator.Constraint;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
@@ -42,7 +39,7 @@ public class CoinFlipCommand extends BaseGameCommand {
     }
 
     @Override
-    public List<Constraint> getConstraint() {
-        return super.getConstraint();
+    public List<Constraint> getConstraints() {
+        return super.getConstraints();
     }
 }
