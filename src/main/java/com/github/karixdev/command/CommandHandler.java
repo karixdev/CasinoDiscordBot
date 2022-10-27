@@ -36,7 +36,7 @@ public class CommandHandler {
             commandFactory = new AccountCommandFactory(accountService);
         } else if (command.equals("game")) {
             GameCommandFactoryManager gameCommandFactoryManager = new GameCommandFactoryManager(accountService);
-            commandFactory = gameCommandFactoryManager.chooseFactory(params);
+            commandFactory = gameCommandFactoryManager.chooseFactory(event.getMessage(), params);
         }
 
         if (commandFactory == null) {

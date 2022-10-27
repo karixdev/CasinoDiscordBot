@@ -5,6 +5,7 @@ import com.github.karixdev.command.CommandFactory;
 import com.github.karixdev.game.coinflip.CoinFlipCommandFactory;
 import com.github.karixdev.game.russianroulette.RussianRouletteCommandFactory;
 import lombok.RequiredArgsConstructor;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.util.List;
 
@@ -13,9 +14,11 @@ public class GameCommandFactoryManager {
 
     private final AccountService accountService;
 
-    public CommandFactory chooseFactory(List<String> params) {
+    public CommandFactory chooseFactory(Message message, List<String> params) {
+        List<String> availableGame = List.of("coin-flip", "russian-roulette");
+
         if (params.size() < 1) {
-            // TODO: send "you have to choose game" message
+            GameMessagesUtils.sendChooseGameMessage(message, availableGame);
         }
 
         String game = params.get(0);

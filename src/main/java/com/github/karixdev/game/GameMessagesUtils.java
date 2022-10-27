@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
+import java.util.List;
+
 public class GameMessagesUtils {
 
     private static void sendGameResultMessage(MessageChannelUnion channel, User user, int credits, String message, String emojis) {
@@ -46,6 +48,25 @@ public class GameMessagesUtils {
     public static void sendNotEnoughCreditsMessage(Message message) {
         message
                 .reply("You dont have enough credits :pleading_face:")
+                .queue();
+    }
+
+    public static void sendChooseGameMessage(Message message, List<String> availableGames) {
+        StringBuilder messageBuilder = new StringBuilder();
+
+        messageBuilder
+                .append("You have to choose a game. ")
+                .append("Currently available: ");
+
+        availableGames.forEach(game -> messageBuilder
+                .append(game)
+                .append(", "));
+
+        messageBuilder
+                .delete(messageBuilder.length() - 2, messageBuilder.length() - 1);
+
+        message
+                .reply(messageBuilder)
                 .queue();
     }
 }
