@@ -21,8 +21,10 @@ public abstract class BaseGameCommand implements ICommand {
 
     @Override
     public void execute(Account account, MessageReceivedEvent event, List<String> params) {
+        GameMessagesUtils gameMessagesUtils = new GameMessagesUtils(event.getMessage());
+
         if (params.size() < 2) {
-            GameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
+            gameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
             return;
         }
 
@@ -30,14 +32,14 @@ public abstract class BaseGameCommand implements ICommand {
         int credits = Integer.parseInt(params.get(1));
 
         if (credits <= 0 || !getValidator().isParamValid(param)) {
-            GameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
+            gameMessagesUtils.sendInvalidParamsMessage(event.getMessage(), expectedInput());
             return;
         }
 
         int oldCredits = account.getCredits();
 
         if (account.getCredits() <= 0 || account.getCredits() < credits) {
-            GameMessagesUtils.sendNotEnoughCreditsMessage(event.getMessage());
+            gameMessagesUtils.sendNotEnoughCreditsMessage(event.getMessage());
             return;
         }
 
@@ -46,9 +48,9 @@ public abstract class BaseGameCommand implements ICommand {
         int difference = account.getCredits() - oldCredits;
 
         if (difference > 0) {
-            GameMessagesUtils.sendWinMessage(event.getChannel(), event.getAuthor(), difference);
+            gameMessagesUtils.sendWinMessage(difference);
         } else {
-            GameMessagesUtils.sendLossMessage(event.getChannel(), event.getAuthor(), Math.abs(difference));
+            gameMessagesUtils.sendLossMessage(Math.abs(difference));
         }
     }
 }
