@@ -7,9 +7,11 @@ import com.github.karixdev.command.ICommand;
 import com.github.karixdev.game.BaseGameCommand;
 import com.github.karixdev.game.GameDataDto;
 import com.github.karixdev.game.GameDataDtoAdapter;
+import com.github.karixdev.game.coinflip.CoinFlipConstraint;
 import com.github.karixdev.validator.Constraint;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -20,18 +22,18 @@ public class RussianRouletteCommand extends BaseGameCommand {
     }
 
     @Override
-    protected void play(MessageReceivedEvent event, String param, int credits, Account account) {
-        int shots = Integer.parseInt(param);
+    protected void play() {
+        int shots = Integer.parseInt(getGameDataDto().getParam());
 
         Random random = new Random();
         int bulletPositionInChamber = random.nextInt(1, 6) + 1;
 
-        int expectedWin = shots * credits;
+        int expectedWin = shots * getGameDataDto().getCredits();
 
         if (shots < bulletPositionInChamber) {
-            account.setCredits(account.getCredits() + expectedWin);
+            getAccount().setCredits(getAccount().getCredits() + expectedWin);
         } else {
-            account.setCredits(account.getCredits() - credits);
+            getAccount().setCredits(getAccount().getCredits() - getGameDataDto().getCredits());
         }
     }
 
@@ -42,6 +44,9 @@ public class RussianRouletteCommand extends BaseGameCommand {
 
     @Override
     public List<Constraint> getConstraints() {
-        return null;
+        List<Constraint> list = new LinkedList<>(super.getConstraints());
+        list.add(new RussianRouletteConstraint(Integer.parseInt(getGameDataDto().getParam())));
+
+        return list;
     }
 }

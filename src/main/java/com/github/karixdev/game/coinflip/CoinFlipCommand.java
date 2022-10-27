@@ -6,6 +6,7 @@ import com.github.karixdev.game.BaseGameCommand;
 import com.github.karixdev.validator.Constraint;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -16,21 +17,21 @@ public class CoinFlipCommand extends BaseGameCommand {
     }
 
     @Override
-    protected void play(MessageReceivedEvent event, String param, int credits, Account account) {
+    protected void play() {
         String[] options = {"heads", "tails"};
 
         Random random = new Random();
         int winner = Math.abs(random.nextInt() % 2);
 
-        int newCredits = account.getCredits();
+        int newCredits = getAccount().getCredits();
 
-        if (options[winner].equals(param)) {
-            newCredits += credits;
+        if (options[winner].equals(getGameDataDto().getParam())) {
+            newCredits += getGameDataDto().getCredits();
         } else {
-            newCredits -= credits;
+            newCredits -= getGameDataDto().getCredits();
         }
 
-        account.setCredits(newCredits);
+        getAccount().setCredits(newCredits);
     }
 
     @Override
@@ -40,6 +41,9 @@ public class CoinFlipCommand extends BaseGameCommand {
 
     @Override
     public List<Constraint> getConstraints() {
-        return super.getConstraints();
+        List<Constraint> list = new LinkedList<>(super.getConstraints());
+        list.add(new CoinFlipConstraint(getGameDataDto().getParam()));
+
+        return list;
     }
 }
