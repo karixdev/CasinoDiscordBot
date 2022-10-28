@@ -4,9 +4,7 @@ import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.game.BaseGameCommand;
 import com.github.karixdev.validator.Constraint;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -23,15 +21,15 @@ public class CoinFlipCommand extends BaseGameCommand {
         Random random = new Random();
         int winner = Math.abs(random.nextInt() % 2);
 
-        int newCredits = getAccount().getCredits();
+        int newCredits = account.getCredits();
 
-        if (options[winner].equals(getGameDataDto().getParam())) {
-            newCredits += getGameDataDto().getCredits();
+        if (options[winner].equals(gameDataDto.getParam())) {
+            newCredits += gameDataDto.getCredits();
         } else {
-            newCredits -= getGameDataDto().getCredits();
+            newCredits -= gameDataDto.getCredits();
         }
 
-        getAccount().setCredits(newCredits);
+        account.setCredits(newCredits);
     }
 
     @Override
@@ -41,9 +39,9 @@ public class CoinFlipCommand extends BaseGameCommand {
 
     @Override
     public List<Constraint> getConstraints() {
-        List<Constraint> list = new LinkedList<>(super.getConstraints());
-        list.add(new CoinFlipConstraint(getGameDataDto().getParam()));
+        super.getConstraints();
+        constraints.add(new CoinFlipConstraint(gameDataDto.getParam()));
 
-        return list;
+        return constraints;
     }
 }

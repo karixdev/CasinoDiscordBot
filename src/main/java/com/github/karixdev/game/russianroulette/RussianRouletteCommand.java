@@ -2,16 +2,9 @@ package com.github.karixdev.game.russianroulette;
 
 import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
-import com.github.karixdev.command.AbstractCommand;
-import com.github.karixdev.command.ICommand;
 import com.github.karixdev.game.BaseGameCommand;
-import com.github.karixdev.game.GameDataDto;
-import com.github.karixdev.game.GameDataDtoAdapter;
-import com.github.karixdev.game.coinflip.CoinFlipConstraint;
 import com.github.karixdev.validator.Constraint;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -23,17 +16,17 @@ public class RussianRouletteCommand extends BaseGameCommand {
 
     @Override
     protected void play() {
-        int shots = Integer.parseInt(getGameDataDto().getParam());
+        int shots = Integer.parseInt(gameDataDto.getParam());
 
         Random random = new Random();
         int bulletPositionInChamber = random.nextInt(1, 6) + 1;
 
-        int expectedWin = shots * getGameDataDto().getCredits();
+        int expectedWin = shots * gameDataDto.getCredits();
 
         if (shots < bulletPositionInChamber) {
-            getAccount().setCredits(getAccount().getCredits() + expectedWin);
+            account.setCredits(account.getCredits() + expectedWin);
         } else {
-            getAccount().setCredits(getAccount().getCredits() - getGameDataDto().getCredits());
+            account.setCredits(account.getCredits() - gameDataDto.getCredits());
         }
     }
 
@@ -44,9 +37,9 @@ public class RussianRouletteCommand extends BaseGameCommand {
 
     @Override
     public List<Constraint> getConstraints() {
-        List<Constraint> list = new LinkedList<>(super.getConstraints());
-        list.add(new RussianRouletteConstraint(Integer.parseInt(getGameDataDto().getParam())));
+        super.getConstraints();
+        constraints.add(new RussianRouletteConstraint(Integer.parseInt(gameDataDto.getParam())));
 
-        return list;
+        return constraints;
     }
 }

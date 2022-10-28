@@ -10,12 +10,14 @@ import com.github.karixdev.validator.ParamsListSizeConstraint;
 import lombok.Getter;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 public abstract class BaseGameCommand extends AbstractCommand {
 
-    private final GameDataDto gameDataDto;
+    protected final GameDataDto gameDataDto;
+
+    protected List<Constraint> constraints = new ArrayList<>();
 
     public BaseGameCommand(AccountService accountService, Account account, List<String> params) {
         super(accountService, account, params);
@@ -28,10 +30,10 @@ public abstract class BaseGameCommand extends AbstractCommand {
     public void execute(MessageReceivedEvent event) {
         GameMessagesUtils gameMessagesUtils = new GameMessagesUtils(event.getMessage());
 
-        int oldCredits = getAccount().getCredits();
+        int oldCredits = account.getCredits();
         play();
-        accountService.updateCredits(getAccount(), getAccount().getCredits());
-        int difference = getAccount().getCredits() - oldCredits;
+        accountService.updateCredits(account, account.getCredits());
+        int difference = account.getCredits() - oldCredits;
 
         if (difference > 0) {
             gameMessagesUtils.sendWinMessage(difference);
@@ -42,10 +44,10 @@ public abstract class BaseGameCommand extends AbstractCommand {
 
     @Override
     public List<Constraint> getConstraints() {
-        return List.of(
-                new ParamsListSizeConstraint(getParams(), 2),
-                new CreditsConstraint(gameDataDto.getCredits()),
-                new EnoughCreditsConstraint(getAccount(), gameDataDto.getCredits())
-        );
+        constraints.add(new ParamsListSizeConstraint(params, 2));
+        constraints.add(new CreditsConstraint(gameDataDto.getCredits()));
+        constraints.add(new EnoughCreditsConstraint(account, gameDataDto.getCredits()));
+
+        return constraints;
     }
 }
