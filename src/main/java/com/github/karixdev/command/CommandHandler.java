@@ -5,6 +5,7 @@ import com.github.karixdev.account.AccountRepository;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.database.Database;
 import com.github.karixdev.game.coinflip.CoinFlipCommandFactory;
+import com.github.karixdev.game.roulette.RouletteCommandFactory;
 import com.github.karixdev.game.russianroulette.RussianRouletteCommandFactory;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Message;
@@ -35,6 +36,7 @@ public class CommandHandler {
             case "account" -> new AccountCommandFactory(accountService);
             case "coin-flip" -> new CoinFlipCommandFactory(accountService);
             case "russian" -> new RussianRouletteCommandFactory(accountService);
+            case "roulette" -> new RouletteCommandFactory(accountService);
             default -> null;
         };
 
