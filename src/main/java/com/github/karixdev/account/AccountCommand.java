@@ -1,9 +1,6 @@
 package com.github.karixdev.account;
 
 import com.github.karixdev.command.AbstractCommand;
-import com.github.karixdev.command.ICommand;
-import com.github.karixdev.validator.Constraint;
-import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -17,17 +14,12 @@ public class AccountCommand extends AbstractCommand {
 
     @Override
     public void execute(MessageReceivedEvent event) {
-        response(event.getMessage(), getAccount().getCredits());
+        response(event.getMessage(), account.getCredits());
     }
 
     @Override
     public String getTemplateCommand() {
         return "!account";
-    }
-
-    @Override
-    public List<Constraint> getConstraints() {
-        return List.of();
     }
 
     private void response(Message message, int credits) {

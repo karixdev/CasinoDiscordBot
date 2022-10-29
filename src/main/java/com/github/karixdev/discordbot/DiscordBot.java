@@ -1,8 +1,10 @@
 package com.github.karixdev.discordbot;
 
 import com.github.karixdev.account.AccountService;
+import com.github.karixdev.database.Database;
 import com.github.karixdev.environment.Environment;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 

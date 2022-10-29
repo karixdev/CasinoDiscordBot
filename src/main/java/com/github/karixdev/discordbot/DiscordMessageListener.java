@@ -2,6 +2,7 @@ package com.github.karixdev.discordbot;
 
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.command.CommandHandler;
+import com.github.karixdev.database.Database;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 

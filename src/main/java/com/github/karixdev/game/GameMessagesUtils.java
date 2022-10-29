@@ -34,23 +34,4 @@ public class GameMessagesUtils {
         sendGameResultMessage(lostCredits,
                 " Sorry but you have lost: ", " credits :cry: :face_with_spiral_eyes:");
     }
-
-    public void sendInvalidParamsMessage(Message message, String content) {
-        StringBuilder messageBuilder = new StringBuilder();
-
-        messageBuilder
-                .append("You have provided wrong parameters. Expected: ")
-                .append(content)
-                .append(" :face_with_open_eyes_and_hand_over_mouth:");
-
-        message
-                .reply(messageBuilder)
-                .queue();
-    }
-
-    public void sendNotEnoughCreditsMessage(Message message) {
-        message
-                .reply("You dont have enough credits :pleading_face:")
-                .queue();
-    }
 }

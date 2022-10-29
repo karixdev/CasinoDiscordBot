@@ -14,33 +14,27 @@ public abstract class CommandFactory {
 
     protected final AccountService accountService;
 
-    protected abstract ICommand createCommand(AccountService accountService, Account account, List<String> params);
+    protected abstract AbstractCommand createCommand(AccountService accountService, Account account, List<String> params);
 
     public void process(MessageReceivedEvent event, List<String> params) {
         long authorId = event.getAuthor().getIdLong();
         Account account = accountService.getAccountIfNotExistsCreateOne(authorId);
 
-        ICommand command = createCommand(accountService, account, params);
+        AbstractCommand command = createCommand(accountService, account, params);
 
-        Validator validator = new Validator(command.getConstraints());
-
-        if (validator.isValid()) {
-            try {
-                command.execute(event);
-            } catch (RuntimeException e) {
-                onFailure(event.getMessage());
-                e.printStackTrace();
-            }
-        } else {
-            event.getMessage()
-                    .reply("You have passed wrong data. Expected: " + command.getTemplateCommand() + ". Also you must have enough money :wink:")
-                    .queue();
+        try {
+            command.execute(event);
+        } catch (NotValidCommandException e) {
+            onFailure(event.getMessage(), e.getMessage());
+        } catch (RuntimeException e) {
+            onFailure(event.getMessage(), "Something went wrong. Please try again later :exploding_head:");
+            e.printStackTrace();
         }
     }
 
-    protected void onFailure(Message message) {
+    protected void onFailure(Message message, String content) {
         message
-                .reply("Something went wrong. Please try again later :exploding_head:")
+                .reply(content)
                 .queue();
     }
 }

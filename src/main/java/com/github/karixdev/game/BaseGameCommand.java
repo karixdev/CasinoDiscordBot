@@ -3,25 +3,25 @@ package com.github.karixdev.game;
 import com.github.karixdev.account.Account;
 import com.github.karixdev.account.AccountService;
 import com.github.karixdev.command.AbstractCommand;
-import com.github.karixdev.validator.Constraint;
-import com.github.karixdev.validator.CreditsConstraint;
-import com.github.karixdev.validator.EnoughCreditsConstraint;
-import com.github.karixdev.validator.ParamsListSizeConstraint;
-import lombok.Getter;
+import com.github.karixdev.command.NotValidCommandException;
+import com.github.karixdev.validator.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseGameCommand extends AbstractCommand {
+public abstract class BaseGameCommand extends AbstractCommand implements Verifiable {
 
     protected final GameDataDto gameDataDto;
 
     protected List<Constraint> constraints = new ArrayList<>();
 
+    private final Validator validator;
+
     public BaseGameCommand(AccountService accountService, Account account, List<String> params) {
         super(accountService, account, params);
         gameDataDto = new GameDataDtoAdapter(params);
+        validator = new Validator(this);
     }
 
     protected abstract void play();
@@ -29,6 +29,10 @@ public abstract class BaseGameCommand extends AbstractCommand {
     @Override
     public void execute(MessageReceivedEvent event) {
         GameMessagesUtils gameMessagesUtils = new GameMessagesUtils(event.getMessage());
+
+        if (!validator.isValid()) {
+            throw new NotValidCommandException(this);
+        }
 
         int oldCredits = account.getCredits();
         play();

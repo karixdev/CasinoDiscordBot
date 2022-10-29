@@ -1,23 +1,24 @@
 package com.github.karixdev.command;
 
 import com.github.karixdev.account.AccountCommandFactory;
+import com.github.karixdev.account.AccountRepository;
 import com.github.karixdev.account.AccountService;
+import com.github.karixdev.database.Database;
 import com.github.karixdev.game.coinflip.CoinFlipCommandFactory;
 import com.github.karixdev.game.russianroulette.RussianRouletteCommandFactory;
+import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import javax.xml.crypto.Data;
 import java.util.*;
 
+@RequiredArgsConstructor
 public class CommandHandler {
 
     public final static char COMMAND_PREFIX = '!';
 
     private final AccountService accountService;
-
-    public CommandHandler(AccountService accountService) {
-        this.accountService = accountService;
-    }
 
     public void handle(String[] args, MessageReceivedEvent event) {
         String command = args[0].substring(1);

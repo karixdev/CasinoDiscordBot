@@ -6,10 +6,11 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class Validator {
-    private final List<Constraint> constraints;
+
+    private final Verifiable verifiable;
 
     public boolean isValid() {
-        for (Constraint constraint : constraints) {
+        for (Constraint constraint : verifiable.getConstraints()) {
             if (!constraint.isValid()) {
                 return false;
             }
