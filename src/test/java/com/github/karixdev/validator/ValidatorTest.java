@@ -17,7 +17,7 @@ public class ValidatorTest {
         );
 
         // when
-        Validator validator = new Validator(constraints);
+        Validator validator = new Validator(createVerifiable(constraints));
         boolean result = validator.isValid();
 
         // then
@@ -33,7 +33,7 @@ public class ValidatorTest {
         );
 
         // when
-        Validator validator = new Validator(constraints);
+        Validator validator = new Validator(createVerifiable(constraints));
         boolean result = validator.isValid();
 
         // then
@@ -49,10 +49,14 @@ public class ValidatorTest {
         );
 
         // when
-        Validator validator = new Validator(constraints);
+        Validator validator = new Validator(createVerifiable(constraints));
         boolean result = validator.isValid();
 
         // then
         assertTrue(result);
+    }
+
+    private Verifiable createVerifiable(List<Constraint> constraints) {
+        return () -> constraints;
     }
 }
